@@ -4,9 +4,8 @@
 //  (found in the LICENSE.Apache file in the root directory).
 //
 
-#include "hdfs/env_hdfs.h"
-
 #include "rocksdb/env.h"
+#include "rocksdb/env_hdfs.h"
 
 #ifdef USE_HDFS
 #ifndef ROCKSDB_HDFS_FILE_C

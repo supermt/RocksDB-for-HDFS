@@ -67,7 +67,7 @@
 #ifndef ROCKSDB_LITE
 #include "rocksdb/utilities/replayer.h"
 #endif  // ROCKSDB_LITE
-#include "hdfs/env_hdfs.h"
+#include "rocksdb/env_hdfs.h"
 #include "rocksdb/utilities/sim_cache.h"
 #include "rocksdb/utilities/transaction.h"
 #include "rocksdb/utilities/transaction_db.h"
