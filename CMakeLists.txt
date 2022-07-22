@@ -347,7 +347,7 @@ if (NOT WITH_PERF_CONTEXT)
     add_definitions(-DNPERF_CONTEXT)
 endif ()
 
-option(FAIL_ON_WARNINGS "Treat compile warnings as errors" ON)
+option(FAIL_ON_WARNINGS "Treat compile warnings as errors" OFF)
 if (FAIL_ON_WARNINGS)
     if (MSVC)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /WX")
@@ -900,7 +900,7 @@ list(APPEND SOURCES
         utilities/transactions/lock/range/range_tree/lib/util/dbt.cc
         utilities/transactions/lock/range/range_tree/lib/util/memarena.cc)
 
-list(APPEND ROCKSDB_PLUGINS "hdfs")
+#list(APPEND ROCKSDB_PLUGINS "hdfs")
 message(STATUS "ROCKSDB_PLUGINS: ${ROCKSDB_PLUGINS}")
 if (ROCKSDB_PLUGINS)
     string(REPLACE " " ";" PLUGINS ${ROCKSDB_PLUGINS})
@@ -943,6 +943,23 @@ if (HAS_ARMV8_CRC)
             util/crc32c_arm64.cc)
 endif (HAS_ARMV8_CRC)
 
+#set(hdfs_SOURCES "env/env_hdfs.cc")
+set(hdfs_LIBS "hdfs" "dl" "jvm" "verify" "jvm")
+set(hdfs_INCLUDE_PATHS "$ENV{JAVA_HOME}/include" "$ENV{JAVA_HOME}/include/linux" "$ENV{HADOOP_HOME}/include")
+set(hdfs_LINK_PATHS "$ENV{JAVA_HOME}/jre/lib/amd64/server" "$ENV{JAVA_HOME}/jre/lib/amd64" "$ENV{HADOOP_HOME}/lib/native")
+set(hdfs_CMAKE_EXE_LINKER_FLAGS "-u hdfs_reg")
+
+add_definitions(-DUSE_HDFS=1)
+message("hdfs dir: ${hdfs_INCLUDE_PATHS}")
+message("hdfs link path: ${hdfs_LINK_PATHS}")
+message("hdfs lib path: ${hdfs_LIBS}")
+
+include_directories(${hdfs_INCLUDE_PATHS})
+list(APPEND THIRDPARTY_LIBS hdfs)
+link_directories(AFTER ${hdfs_LINK_PATHS})
+
+message("third party: ${THIRDPARTY_LIBS}")
+
 if (WIN32)
     list(APPEND SOURCES
             port/win/io_win.cc
@@ -964,6 +981,7 @@ if (WIN32)
 else ()
     list(APPEND SOURCES
             port/port_posix.cc
+            env/env_hdfs.cc
             env/env_posix.cc
             env/fs_posix.cc
             env/io_posix.cc)
