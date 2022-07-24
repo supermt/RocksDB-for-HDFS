@@ -900,7 +900,7 @@ list(APPEND SOURCES
         utilities/transactions/lock/range/range_tree/lib/util/dbt.cc
         utilities/transactions/lock/range/range_tree/lib/util/memarena.cc)
 
-#list(APPEND ROCKSDB_PLUGINS "hdfs")
+list(APPEND ROCKSDB_PLUGINS "hdfs")
 message(STATUS "ROCKSDB_PLUGINS: ${ROCKSDB_PLUGINS}")
 if (ROCKSDB_PLUGINS)
     string(REPLACE " " ";" PLUGINS ${ROCKSDB_PLUGINS})
